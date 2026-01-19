@@ -475,27 +475,32 @@ function updateShopUI() {
 }
 
 // Shop event listeners
-document.getElementById('shopScreenBackBtn')?.addEventListener('click', () => {
-    playSound(523, 0.2);
-    gameState.shopOpen = false;
-    showScreen(gameScreen);
-    saveGameState();
-});
-
-if (shopBtn) {
-    shopBtn.addEventListener('click', () => {
-        playSound(587, 0.2);
-        if (gameState.shopOpen) {
-            // Close shop
+function setupShopListeners() {
+    const backBtn = document.getElementById('shopScreenBackBtn');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            playSound(523, 0.2);
             gameState.shopOpen = false;
             showScreen(gameScreen);
-        } else {
-            // Open shop
-            gameState.shopOpen = true;
-            showScreen(document.getElementById('shopScreen'));
-            openShop();
-        }
-    });
+            saveGameState();
+        });
+    }
+
+    if (shopBtn) {
+        shopBtn.addEventListener('click', () => {
+            playSound(587, 0.2);
+            if (gameState.shopOpen) {
+                // Close shop
+                gameState.shopOpen = false;
+                showScreen(gameScreen);
+            } else {
+                // Open shop
+                gameState.shopOpen = true;
+                showScreen(document.getElementById('shopScreen'));
+                openShop();
+            }
+        });
+    }
 }
 
 // Initialize on page load
@@ -505,6 +510,7 @@ window.addEventListener('load', () => {
     loadGameState();
     updateStatsDisplay();
     updateCharacterVisuals();
+    setupShopListeners();
 });
 
 // Save settings on page unload
