@@ -44,7 +44,7 @@ A web-based care game where you look after a virtual character. Keep their healt
 
 ## Try It Live
 
-Play the game at: https://smikeyhahah-art.github.io/takecare
+Play the game at: http://localhost:8000
 
 ## Files
 
