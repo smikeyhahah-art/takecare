@@ -273,7 +273,7 @@ actionButtons.forEach(btn => {
 // Award coins when stats reach 85% and 100%
 function checkCoinReward() {
     const allAt85 = gameState.health >= 85 && gameState.happiness >= 85 && gameState.energy >= 85;
-    const allAt100 = gameState.health >= 100 && gameState.happiness >= 100 && gameState.energy >= 100;
+    const allAt100 = gameState.health === 100 && gameState.happiness === 100 && gameState.energy === 100;
 
     // Check for 100% - highest priority (once per round)
     if (allAt100 && !gameState.coinMilestones.reached100) {
@@ -283,6 +283,7 @@ function checkCoinReward() {
         playSound(784, 0.6);
         showAction('🪙 Excellent! +10 coins!');
         updateCoinsDisplay();
+        saveGameState();
         
         // Reset all stats to 25%
         gameState.health = 25;
@@ -297,6 +298,7 @@ function checkCoinReward() {
         playSound(784, 0.5);
         showAction('🪙 Great! +5 coins!');
         updateCoinsDisplay();
+        saveGameState();
     }
     // Reset milestones if stats drop below 85%
     else if (!allAt85) {
@@ -477,6 +479,7 @@ document.getElementById('shopScreenBackBtn')?.addEventListener('click', () => {
     playSound(523, 0.2);
     gameState.shopOpen = false;
     showScreen(gameScreen);
+    saveGameState();
 });
 
 if (shopBtn) {
