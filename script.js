@@ -14,11 +14,7 @@ const gameState = {
         bowtie: false,
         crown: false
     },
-    targetPercentages: {
-        health: 50,
-        happiness: 50,
-        energy: 50
-    },
+    lastCoinAward: 0,
     shopOpen: false
 };
 
@@ -92,7 +88,7 @@ function showScreen(screen) {
 playBtn.addEventListener('click', () => {
     gameState.isPlaying = true;
     gameState.lastActionTime = Date.now();
-    generateTargetPercentages();
+    gameState.lastCoinAward = Date.now();
     playSound(523, 0.2); // Sound effect
     showScreen(gameScreen);
     updateCoinsDisplay();
@@ -271,42 +267,20 @@ actionButtons.forEach(btn => {
     });
 });
 
-// Generate random target percentages divisible by 5 (25, 30, 35... 85, 90%)
-function generateTargetPercentages() {
-    const possibleValues = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90];
-    gameState.targetPercentages = {
-        health: possibleValues[Math.floor(Math.random() * possibleValues.length)],
-        happiness: possibleValues[Math.floor(Math.random() * possibleValues.length)],
-        energy: possibleValues[Math.floor(Math.random() * possibleValues.length)]
-    };
-    updateTargetDisplay();
-}
-
-// Update target display in UI
-function updateTargetDisplay() {
-    const targetEl = document.getElementById('targetStats');
-    if (targetEl && gameState.targetPercentages) {
-        const h = gameState.targetPercentages.health;
-        const hp = gameState.targetPercentages.happiness;
-        const e = gameState.targetPercentages.energy;
-        targetEl.textContent = `Target: Health ${h}% | Happiness ${hp}% | Energy ${e}%`;
-    }
-}
-
-// Check if player matched target percentages
-function checkPercentageMatch() {
-    if (!gameState.targetPercentages) return;
-
-    const healthMatch = Math.abs(gameState.health - gameState.targetPercentages.health) <= 2;
-    const happinessMatch = Math.abs(gameState.happiness - gameState.targetPercentages.happiness) <= 2;
-    const energyMatch = Math.abs(gameState.energy - gameState.targetPercentages.energy) <= 2;
-
-    if (healthMatch && happinessMatch && energyMatch) {
-        gameState.coins += 10;
-        playSound(784, 0.5);
-        showAction('🪙 Perfect! Earned 10 coins!');
-        updateCoinsDisplay();
-        generateTargetPercentages();
+// Award coins every 5 seconds if all stats are 100%
+function checkCoinReward() {
+    const now = Date.now();
+    
+    // Check if 5 seconds have passed since last coin award attempt
+    if (now - gameState.lastCoinAward >= 5000) {
+        // Check if all stats are at 100%
+        if (gameState.health === 100 && gameState.happiness === 100 && gameState.energy === 100) {
+            gameState.coins += 5;
+            playSound(784, 0.5);
+            showAction('🪙 Perfect! +5 coins!');
+            updateCoinsDisplay();
+        }
+        gameState.lastCoinAward = now;
     }
 }
 
@@ -330,7 +304,7 @@ function decayStats() {
     gameState.energy = Math.max(0, gameState.energy - 2.5);
 
     updateStatsDisplay();
-    checkPercentageMatch();
+    checkCoinReward();
 }
 
 // Game loop
