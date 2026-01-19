@@ -26,6 +26,8 @@ const menuScreen = document.getElementById('menuScreen');
 const settingsScreen = document.getElementById('settingsScreen');
 const gameScreen = document.getElementById('gameScreen');
 const container = document.querySelector('.container');
+const popupOverlay = document.getElementById('popupOverlay');
+const closeObjectiveBtn = document.getElementById('closeObjectiveBtn');
 
 const playBtn = document.getElementById('playBtn');
 const settingsBtn = document.getElementById('settingsBtn');
@@ -95,7 +97,21 @@ playBtn.addEventListener('click', () => {
     playSound(523, 0.2); // Sound effect
     showScreen(gameScreen);
     updateCoinsDisplay();
+    showObjectivePopup();
     startGameLoop();
+});
+
+function showObjectivePopup() {
+    popupOverlay.classList.add('active');
+}
+
+function closeObjectivePopup() {
+    popupOverlay.classList.remove('active');
+}
+
+closeObjectiveBtn.addEventListener('click', () => {
+    playSound(523, 0.2);
+    closeObjectivePopup();
 });
 
 settingsBtn.addEventListener('click', () => {

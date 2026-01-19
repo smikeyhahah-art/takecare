@@ -800,3 +800,96 @@ input:checked + .toggle-slider:before {
     left: 50%;
     transform: translateX(-50%);
 }
+
+/* Popup Overlay */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-overlay.active {
+    display: flex;
+}
+
+.popup-content {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: popupSlide 0.4s ease;
+    text-align: center;
+}
+
+@keyframes popupSlide {
+    from {
+        transform: scale(0.8) translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.popup-content h2 {
+    color: var(--text-color);
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.objective-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.objective-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background: var(--light-bg);
+    border-radius: 10px;
+    align-items: flex-start;
+}
+
+.objective-icon {
+    font-size: 28px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.objective-item h3 {
+    color: var(--primary-color);
+    font-size: 16px;
+    margin: 0 0 5px 0;
+}
+
+.objective-item p {
+    color: #6b7280;
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.objective-subtitle {
+    color: var(--text-color);
+    font-weight: 600;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+#closeObjectiveBtn {
+    margin-top: 15px;
+    min-width: 150px;
+}
