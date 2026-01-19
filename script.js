@@ -14,11 +14,12 @@ const gameState = {
         bowtie: false,
         crown: false
     },
-    targetStats: null,
-    statsReached: {
-        stat1: false,
-        stat2: false
-    }
+    targetPercentages: {
+        health: 50,
+        happiness: 50,
+        energy: 50
+    },
+    shopOpen: false
 };
 
 // DOM Elements
@@ -91,7 +92,7 @@ function showScreen(screen) {
 playBtn.addEventListener('click', () => {
     gameState.isPlaying = true;
     gameState.lastActionTime = Date.now();
-    generateTargetStats();
+    generateTargetPercentages();
     playSound(523, 0.2); // Sound effect
     showScreen(gameScreen);
     updateCoinsDisplay();
@@ -111,6 +112,7 @@ backBtn.addEventListener('click', () => {
 gameMenuBtn.addEventListener('click', () => {
     playSound(523, 0.2);
     gameState.isPlaying = false;
+    gameState.shopOpen = false;
     showScreen(menuScreen);
     stopGameLoop();
 });
@@ -269,42 +271,41 @@ actionButtons.forEach(btn => {
     });
 });
 
-// Generate random target stats (must be 2 different ones)
-function generateTargetStats() {
-    const stats = ['health', 'happiness', 'energy'];
-    const shuffled = stats.sort(() => Math.random() - 0.5);
-    gameState.targetStats = {
-        stat1: shuffled[0],
-        stat2: shuffled[1]
+// Generate random target percentages (20-90% for each stat)
+function generateTargetPercentages() {
+    gameState.targetPercentages = {
+        health: Math.floor(Math.random() * 71) + 20,  // 20-90%
+        happiness: Math.floor(Math.random() * 71) + 20,
+        energy: Math.floor(Math.random() * 71) + 20
     };
-    gameState.statsReached = { stat1: false, stat2: false };
     updateTargetDisplay();
 }
 
 // Update target display in UI
 function updateTargetDisplay() {
     const targetEl = document.getElementById('targetStats');
-    if (targetEl && gameState.targetStats) {
-        targetEl.textContent = `Goal: ${gameState.targetStats.stat1} & ${gameState.targetStats.stat2} to 80%`;
+    if (targetEl && gameState.targetPercentages) {
+        const h = gameState.targetPercentages.health;
+        const hp = gameState.targetPercentages.happiness;
+        const e = gameState.targetPercentages.energy;
+        targetEl.textContent = `Target: Health ${h}% | Happiness ${hp}% | Energy ${e}%`;
     }
 }
 
-// Check if player earned coins
-function checkCoinReward() {
-    if (!gameState.targetStats) return;
+// Check if player matched target percentages
+function checkPercentageMatch() {
+    if (!gameState.targetPercentages) return;
 
-    const stat1Value = gameState[gameState.targetStats.stat1];
-    const stat2Value = gameState[gameState.targetStats.stat2];
+    const healthMatch = Math.abs(gameState.health - gameState.targetPercentages.health) <= 2;
+    const happinessMatch = Math.abs(gameState.happiness - gameState.targetPercentages.happiness) <= 2;
+    const energyMatch = Math.abs(gameState.energy - gameState.targetPercentages.energy) <= 2;
 
-    gameState.statsReached.stat1 = stat1Value >= 80;
-    gameState.statsReached.stat2 = stat2Value >= 80;
-
-    if (gameState.statsReached.stat1 && gameState.statsReached.stat2) {
+    if (healthMatch && happinessMatch && energyMatch) {
         gameState.coins += 10;
         playSound(784, 0.5);
-        showAction('🪙 Earned 10 coins!');
+        showAction('🪙 Perfect! Earned 10 coins!');
         updateCoinsDisplay();
-        generateTargetStats();
+        generateTargetPercentages();
     }
 }
 
@@ -317,6 +318,18 @@ function updateCoinsDisplay() {
     if (shopCoins) {
         shopCoins.textContent = gameState.coins;
     }
+}
+
+// Stat decay over time
+function decayStats() {
+    if (!gameState.isPlaying) return;
+
+    gameState.health = Math.max(0, gameState.health - 2);
+    gameState.happiness = Math.max(0, gameState.happiness - 1.5);
+    gameState.energy = Math.max(0, gameState.energy - 2.5);
+
+    updateStatsDisplay();
+    checkPercentageMatch();
 }
 
 // Game loop
@@ -464,14 +477,23 @@ function updateShopUI() {
 // Shop event listeners
 document.getElementById('shopScreenBackBtn')?.addEventListener('click', () => {
     playSound(523, 0.2);
+    gameState.shopOpen = false;
     showScreen(gameScreen);
 });
 
 if (shopBtn) {
     shopBtn.addEventListener('click', () => {
         playSound(587, 0.2);
-        showScreen(document.getElementById('shopScreen'));
-        openShop();
+        if (gameState.shopOpen) {
+            // Close shop
+            gameState.shopOpen = false;
+            showScreen(gameScreen);
+        } else {
+            // Open shop
+            gameState.shopOpen = true;
+            showScreen(document.getElementById('shopScreen'));
+            openShop();
+        }
     });
 }
 
