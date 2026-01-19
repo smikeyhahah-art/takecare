@@ -267,12 +267,12 @@ actionButtons.forEach(btn => {
     });
 });
 
-// Award coins every 2 seconds if all stats are 100%
+// Award coins every 1 second if all stats are 100%
 function checkCoinReward() {
     const now = Date.now();
     
-    // Check if 2 seconds have passed since last coin award attempt
-    if (now - gameState.lastCoinAward >= 2000) {
+    // Check if 1 second has passed since last coin award attempt
+    if (now - gameState.lastCoinAward >= 1000) {
         // Check if all stats are at 100%
         if (gameState.health === 100 && gameState.happiness === 100 && gameState.energy === 100) {
             gameState.coins += 5;
