@@ -191,12 +191,12 @@ function updateCharacterExpression() {
     }
 }
 
-// Action handlers
+// Action handlers (all changes divisible by 5 for easy tracking)
 const actionHandlers = {
     feed: () => {
         gameState.health = Math.min(100, gameState.health + 15);
         gameState.energy = Math.max(0, gameState.energy - 5);
-        gameState.happiness = Math.min(100, gameState.happiness + 5);
+        gameState.happiness = Math.min(100, gameState.happiness + 10);
         playSound(523, 0.3);
         showAction('Fed! 🍎');
     },
@@ -210,13 +210,13 @@ const actionHandlers = {
     sleep: () => {
         gameState.energy = Math.min(100, gameState.energy + 30);
         gameState.health = Math.min(100, gameState.health + 10);
-        gameState.happiness = Math.max(0, gameState.happiness - 5);
+        gameState.happiness = Math.max(0, gameState.happiness - 10);
         playSound(392, 0.5);
         showAction('Sleeping... 😴');
     },
     pet: () => {
         gameState.happiness = Math.min(100, gameState.happiness + 10);
-        gameState.health = Math.min(100, gameState.health + 3);
+        gameState.health = Math.min(100, gameState.health + 5);
         playSound(784, 0.3);
         showAction('Petted! 🐾');
     }
@@ -271,12 +271,13 @@ actionButtons.forEach(btn => {
     });
 });
 
-// Generate random target percentages (20-90% for each stat)
+// Generate random target percentages divisible by 5 (25, 30, 35... 85, 90%)
 function generateTargetPercentages() {
+    const possibleValues = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90];
     gameState.targetPercentages = {
-        health: Math.floor(Math.random() * 71) + 20,  // 20-90%
-        happiness: Math.floor(Math.random() * 71) + 20,
-        energy: Math.floor(Math.random() * 71) + 20
+        health: possibleValues[Math.floor(Math.random() * possibleValues.length)],
+        happiness: possibleValues[Math.floor(Math.random() * possibleValues.length)],
+        energy: possibleValues[Math.floor(Math.random() * possibleValues.length)]
     };
     updateTargetDisplay();
 }
