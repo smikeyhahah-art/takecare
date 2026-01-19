@@ -1,0 +1,809 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #6366f1;
+    --secondary-color: #ec4899;
+    --text-color: #1f2937;
+    --light-bg: #f3f4f6;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: filter 0.3s ease;
+    padding: 10px;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+    transition: filter 0.3s ease;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.screen.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Menu Screen */
+.menu-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    animation: slideUp 0.6s ease;
+}
+
+.game-title {
+    font-size: 60px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+}
+
+.game-subtitle {
+    font-size: 18px;
+    color: #6b7280;
+    font-weight: 300;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Buttons */
+.btn {
+    padding: 14px 40px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+    box-shadow: var(--shadow);
+    min-width: 200px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background: var(--light-bg);
+    color: var(--text-color);
+    border: 2px solid var(--primary-color);
+    min-width: 200px;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 12px;
+    min-width: auto;
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-small:hover {
+    background: #5558e3;
+}
+
+/* Settings Screen */
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.settings-content h2 {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 32px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: var(--light-bg);
+    border-radius: 10px;
+    gap: 15px;
+}
+
+.setting-item label {
+    font-weight: 600;
+    color: var(--text-color);
+    flex: 1;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 28px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(22px);
+}
+
+.status-text {
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 30px;
+    text-align: right;
+}
+
+/* Brightness Control */
+.brightness-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+#brightnessSlider {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: #d1d5db;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#brightnessSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#brightnessSlider::-webkit-slider-thumb:hover {
+    background: var(--secondary-color);
+}
+
+#brightnessSlider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+}
+
+.brightness-value {
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 45px;
+    text-align: right;
+}
+
+/* Game Screen */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    background: var(--light-bg);
+    border-bottom: 2px solid #e5e7eb;
+    width: 100%;
+}
+
+.game-header h2 {
+    color: var(--text-color);
+    font-size: 18px;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.coins-display {
+    font-weight: 700;
+    font-size: 14px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    min-width: 30px;
+    text-align: center;
+}
+
+.btn-small {
+    padding: 5px 10px;
+    font-size: 11px;
+    min-width: auto;
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-small:hover {
+    background: #5558e3;
+}
+
+.game-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    height: calc(100% - 50px);
+    overflow-y: auto;
+}
+
+.target-stats {
+    text-align: center;
+    padding: 6px 10px;
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    border-radius: 5px;
+    color: #92400e;
+    font-weight: 600;
+    font-size: 12px;
+    margin: 0;
+}
+
+.game-area {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Character */
+.character {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.character-face {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.eyes {
+    display: flex;
+    gap: 20px;
+}
+
+.eye {
+    width: 12px;
+    height: 12px;
+    background: #1f2937;
+    border-radius: 50%;
+    animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 45%, 50%, 100% {
+        height: 12px;
+    }
+    47.5%, 52.5% {
+        height: 2px;
+    }
+}
+
+.mouth {
+    width: 30px;
+    height: 15px;
+    border: 2px solid #1f2937;
+    border-top: none;
+    border-radius: 0 0 30px 30px;
+}
+
+/* Stats */
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 200px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.stat-label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.stat-bar {
+    height: 20px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.stat > span:last-child {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Actions */
+.actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-btn {
+    padding: 15px;
+    background: var(--light-bg);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    color: var(--text-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.action-btn:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 5px;
+    }
+
+    .container {
+        border-radius: 15px;
+    }
+
+    .game-title {
+        font-size: 45px;
+    }
+
+    .game-subtitle {
+        font-size: 16px;
+    }
+
+    .menu-content {
+        gap: 25px;
+        padding: 20px;
+    }
+
+    .btn {
+        min-width: 140px;
+        padding: 12px 28px;
+        font-size: 14px;
+    }
+
+    .settings-content {
+        width: 95%;
+    }
+
+    .settings-content h2 {
+        font-size: 28px;
+    }
+
+    .setting-item {
+        padding: 16px;
+        gap: 10px;
+    }
+
+    .game-header {
+        padding: 12px 15px;
+    }
+
+    .game-header h2 {
+        font-size: 18px;
+    }
+
+    .game-content {
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .game-area {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .character {
+        width: 100px;
+        height: 100px;
+    }
+
+    .stats {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .action-btn {
+        padding: 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0;
+    }
+
+    .container {
+        border-radius: 10px;
+        margin: 0;
+    }
+
+    .game-title {
+        font-size: 36px;
+        margin-bottom: 5px;
+    }
+
+    .game-subtitle {
+        font-size: 14px;
+    }
+
+    .menu-content {
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .btn {
+        min-width: 120px;
+        padding: 11px 24px;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+        min-width: 100%;
+    }
+
+    .btn-secondary {
+        min-width: 100%;
+    }
+
+    .settings-content {
+        width: 100%;
+        gap: 20px;
+        padding: 15px;
+    }
+
+    .settings-content h2 {
+        font-size: 24px;
+    }
+
+    .setting-item {
+        padding: 14px;
+        flex-direction: row;
+    }
+
+    .game-header {
+        padding: 10px 12px;
+        flex-wrap: wrap;
+    }
+
+    .game-header h2 {
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    #gameMenuBtn {
+        width: 100%;
+    }
+
+    .game-content {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .game-area {
+        gap: 12px;
+        padding: 10px 0;
+    }
+
+    .character {
+        width: 90px;
+        height: 90px;
+    }
+
+    .eye {
+        width: 10px;
+        height: 10px;
+    }
+
+    .mouth {
+        width: 25px;
+        height: 13px;
+    }
+
+    .stats {
+        min-width: 100%;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .stat-bar {
+        height: 18px;
+    }
+
+    .stat > span:last-child {
+        font-size: 11px;
+    }
+
+    .actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+
+    .action-btn {
+        padding: 10px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+}
+
+/* Character Cosmetics */
+.cosmetic {
+    position: absolute;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cosmetic.hat {
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cosmetic.glasses {
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cosmetic.bowtie {
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cosmetic.crown {
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 45px;
+}
+
+/* Shop Screen */
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: var(--light-bg);
+    border-bottom: 2px solid #e5e7eb;
+    width: 100%;
+}
+
+.shop-header h2 {
+    color: var(--text-color);
+    margin: 0;
+}
+
+.coins-info {
+    font-weight: 700;
+    font-size: 18px;
+    color: #f59e0b;
+}
+
+.shop-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100% - 140px);
+}
+
+.shop-item {
+    background: var(--light-bg);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100px;
+}
+
+.shop-item:not(.owned):hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.shop-item.owned {
+    opacity: 0.7;
+    background: #d1fae5;
+    border-color: #10b981;
+    cursor: default;
+}
+
+.item-name {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.item-price {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--secondary-color);
+}
+
+.shop-item.owned .item-price {
+    color: #059669;
+}
+
+#shopScreenBackBtn {
+    position: absolute;
+    bottom: 20px;
+    width: 90%;
+    max-width: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+}

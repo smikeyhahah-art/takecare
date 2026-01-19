@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TakeCare - Web Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Menu Screen -->
+        <div id="menuScreen" class="screen active">
+            <div class="menu-content">
+                <h1 class="game-title">TakeCare</h1>
+                <p class="game-subtitle">A caring game</p>
+                
+                <button id="playBtn" class="btn btn-primary">PLAY</button>
+                <button id="settingsBtn" class="btn btn-secondary">SETTINGS</button>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settingsScreen" class="screen">
+            <div class="settings-content">
+                <h2>Settings</h2>
+                
+                <div class="setting-item">
+                    <label for="soundToggle">Sound</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="soundToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <span id="soundStatus" class="status-text">ON</span>
+                </div>
+
+                <div class="setting-item">
+                    <label for="brightnessSlider">Brightness</label>
+                    <div class="brightness-control">
+                        <input type="range" id="brightnessSlider" min="30" max="100" value="100">
+                        <span id="brightnessValue" class="brightness-value">100%</span>
+                    </div>
+                </div>
+
+                <button id="backBtn" class="btn btn-secondary">BACK</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <div class="game-header">
+                <h2>TakeCare Game</h2>
+                <div class="header-right">
+                    <span id="coins" class="coins-display">0</span>
+                    <button id="shopBtn" class="btn btn-small">SHOP</button>
+                    <button id="gameMenuBtn" class="btn btn-small">MENU</button>
+                </div>
+            </div>
+            
+            <div class="game-content">
+                <div id="targetStats" class="target-stats">Goal: Loading...</div>
+                
+                <div class="game-area">
+                    <div id="character" class="character">
+                        <div class="character-face">
+                            <div class="eyes">
+                                <div class="eye"></div>
+                                <div class="eye"></div>
+                            </div>
+                            <div class="mouth"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="stats" class="stats">
+                        <div class="stat">
+                            <span class="stat-label">Health:</span>
+                            <div class="stat-bar">
+                                <div id="healthBar" class="stat-fill" style="width: 80%"></div>
+                            </div>
+                            <span id="healthValue">80%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Happiness:</span>
+                            <div class="stat-bar">
+                                <div id="happinessBar" class="stat-fill" style="width: 70%"></div>
+                            </div>
+                            <span id="happinessValue">70%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Energy:</span>
+                            <div class="stat-bar">
+                                <div id="energyBar" class="stat-fill" style="width: 60%"></div>
+                            </div>
+                            <span id="energyValue">60%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="action-btn" data-action="feed">🍎 Feed</button>
+                    <button class="action-btn" data-action="play">🎮 Play</button>
+                    <button class="action-btn" data-action="sleep">😴 Sleep</button>
+                    <button class="action-btn" data-action="pet">🐾 Pet</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Screen -->
+        <div id="shopScreen" class="screen">
+            <div class="shop-header">
+                <h2>Cosmetics Shop</h2>
+                <div class="coins-info">💰 <span id="shopCoins">0</span> Coins</div>
+            </div>
+            <div id="shopContent" class="shop-content"></div>
+            <button id="shopScreenBackBtn" class="btn btn-secondary">BACK</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
