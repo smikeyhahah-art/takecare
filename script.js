@@ -14,7 +14,10 @@ const gameState = {
         bowtie: false,
         crown: false
     },
-    lastCoinAward: 0,
+    coinMilestones: {
+        reached85: false,
+        reached100: false
+    },
     shopOpen: false
 };
 
@@ -88,7 +91,7 @@ function showScreen(screen) {
 playBtn.addEventListener('click', () => {
     gameState.isPlaying = true;
     gameState.lastActionTime = Date.now();
-    gameState.lastCoinAward = Date.now();
+    gameState.coinMilestones = { reached85: false, reached100: false };
     playSound(523, 0.2); // Sound effect
     showScreen(gameScreen);
     updateCoinsDisplay();
@@ -267,26 +270,38 @@ actionButtons.forEach(btn => {
     });
 });
 
-// Award coins every 1 second if all stats are 100%
+// Award coins when stats reach 85% and 100%
 function checkCoinReward() {
-    const now = Date.now();
-    
-    // Check if 1 second has passed since last coin award attempt
-    if (now - gameState.lastCoinAward >= 1000) {
-        // Check if all stats are at 100%
-        if (gameState.health === 100 && gameState.happiness === 100 && gameState.energy === 100) {
-            gameState.coins += 5;
-            playSound(784, 0.5);
-            showAction('🪙 Perfect! +5 coins!');
-            updateCoinsDisplay();
-            
-            // Reset all stats to 25%
-            gameState.health = 25;
-            gameState.happiness = 25;
-            gameState.energy = 25;
-            updateStatsDisplay();
-        }
-        gameState.lastCoinAward = now;
+    const allAt85 = gameState.health >= 85 && gameState.happiness >= 85 && gameState.energy >= 85;
+    const allAt100 = gameState.health === 100 && gameState.happiness === 100 && gameState.energy === 100;
+
+    // Check for 100% - highest priority
+    if (allAt100 && !gameState.coinMilestones.reached100) {
+        gameState.coins += 10;
+        gameState.coinMilestones.reached100 = true;
+        gameState.coinMilestones.reached85 = false;
+        playSound(784, 0.6);
+        showAction('🪙 Excellent! +10 coins!');
+        updateCoinsDisplay();
+        
+        // Reset all stats to 25%
+        gameState.health = 25;
+        gameState.happiness = 25;
+        gameState.energy = 25;
+        updateStatsDisplay();
+    }
+    // Check for 85%
+    else if (allAt85 && !gameState.coinMilestones.reached85) {
+        gameState.coins += 5;
+        gameState.coinMilestones.reached85 = true;
+        playSound(784, 0.5);
+        showAction('🪙 Great! +5 coins!');
+        updateCoinsDisplay();
+    }
+    // Reset milestones if stats drop below 85%
+    else if (!allAt85) {
+        gameState.coinMilestones.reached85 = false;
+        gameState.coinMilestones.reached100 = false;
     }
 }
 
