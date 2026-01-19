@@ -48,6 +48,7 @@ const energyValue = document.getElementById('energyValue');
 
 const actionButtons = document.querySelectorAll('.action-btn');
 const character = document.getElementById('character');
+const shopBtn = document.getElementById('shopBtn');
 const coinsDisplay = document.getElementById('coins');
 
 // Audio Context for sound effects
@@ -120,7 +121,12 @@ settingsBtn.addEventListener('click', () => {
 
 backBtn.addEventListener('click', () => {
     playSound(523, 0.2);
-    showScreen(menuScreen);
+    if (gameState.shopOpen) {
+        gameState.shopOpen = false;
+        showScreen(gameScreen);
+    } else {
+        showScreen(menuScreen);
+    }
 });
 
 gameMenuBtn.addEventListener('click', () => {
@@ -491,10 +497,7 @@ function updateShopUI() {
 
 // Shop event listeners
 function setupShopListeners() {
-    const shopBtn = document.getElementById('shopBtn');
     const backBtn = document.getElementById('shopScreenBackBtn');
-    const shopScreen = document.getElementById('shopScreen');
-    
     if (backBtn) {
         backBtn.addEventListener('click', () => {
             playSound(523, 0.2);
@@ -514,7 +517,7 @@ function setupShopListeners() {
             } else {
                 // Open shop
                 gameState.shopOpen = true;
-                showScreen(shopScreen);
+                showScreen(document.getElementById('shopScreen'));
                 openShop();
             }
         });
