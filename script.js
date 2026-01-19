@@ -279,6 +279,12 @@ function checkCoinReward() {
             playSound(784, 0.5);
             showAction('🪙 Perfect! +5 coins!');
             updateCoinsDisplay();
+            
+            // Reset all stats to 25%
+            gameState.health = 25;
+            gameState.happiness = 25;
+            gameState.energy = 25;
+            updateStatsDisplay();
         }
         gameState.lastCoinAward = now;
     }
