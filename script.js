@@ -273,9 +273,9 @@ actionButtons.forEach(btn => {
 // Award coins when stats reach 85% and 100%
 function checkCoinReward() {
     const allAt85 = gameState.health >= 85 && gameState.happiness >= 85 && gameState.energy >= 85;
-    const allAt100 = gameState.health === 100 && gameState.happiness === 100 && gameState.energy === 100;
+    const allAt100 = gameState.health >= 100 && gameState.happiness >= 100 && gameState.energy >= 100;
 
-    // Check for 100% - highest priority
+    // Check for 100% - highest priority (once per round)
     if (allAt100 && !gameState.coinMilestones.reached100) {
         gameState.coins += 10;
         gameState.coinMilestones.reached100 = true;
@@ -290,8 +290,8 @@ function checkCoinReward() {
         gameState.energy = 25;
         updateStatsDisplay();
     }
-    // Check for 85%
-    else if (allAt85 && !gameState.coinMilestones.reached85) {
+    // Check for 85% (once per round, only if haven't reached 100% yet)
+    else if (allAt85 && !gameState.coinMilestones.reached85 && !gameState.coinMilestones.reached100) {
         gameState.coins += 5;
         gameState.coinMilestones.reached85 = true;
         playSound(784, 0.5);
@@ -300,8 +300,10 @@ function checkCoinReward() {
     }
     // Reset milestones if stats drop below 85%
     else if (!allAt85) {
-        gameState.coinMilestones.reached85 = false;
-        gameState.coinMilestones.reached100 = false;
+        if (gameState.coinMilestones.reached85 || gameState.coinMilestones.reached100) {
+            gameState.coinMilestones.reached85 = false;
+            gameState.coinMilestones.reached100 = false;
+        }
     }
 }
 
